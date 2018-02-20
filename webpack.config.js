@@ -1,8 +1,8 @@
 let path = require('path');
 let webpack = require('webpack');
 
-let entryPoint = path.resolve(__dirname, './BettingApp.Web/Scripts/app/main.js');
-let outputPath = path.resolve(__dirname, './BettingApp.Web/Scripts/build');
+let entryPoint = path.resolve(__dirname, 'BettingApp.Web/Scripts/app/main.js');
+let outputPath = path.resolve(__dirname, 'BettingApp.Web/Scripts/build');
 let fileName = 'build.js';
 
 let plugins = [];
@@ -33,7 +33,7 @@ module.exports = {
 	},
 	output: {
 		path: outputPath,
-		filename: fileName
+        filename: fileName
 	},
 	module: {
 		rules: [
@@ -56,5 +56,8 @@ module.exports = {
 			'vue$': 'vue/dist/vue.esm.js'  // Resolving the vue var for standalone build
 		}
     },
+	devServer: {
+        contentBase: 'BettingApp.Web/Scripts/build'
+	},
 	plugins // set the previously defined plugins
 };

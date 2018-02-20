@@ -1,6 +1,5 @@
 ﻿<template>
     <div>
-        TESTETST
         {{message}}
     </div>
 </template>
@@ -10,7 +9,7 @@
         name: 'Test',
         data() {
             return {
-                message: 'Četvrta poruka'
+                message: 'Poruka'
             }
         }
     }

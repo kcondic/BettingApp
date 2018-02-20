@@ -5,7 +5,9 @@ import Test from './components/Test.vue'
 
 Vue.use(Router);
 const routes = [
-    { path: '/test', component: Test }
+    {
+        path: '/test', component: Test
+    }
 ];
 
 
