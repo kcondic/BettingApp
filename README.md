@@ -2,6 +2,10 @@
 Short betting app with minimal functionalities in WebApi/Vue.js
 
 Pri otvaranju projekta se pokreće webpack dev server na localhost:8080.
+Ako se stranica ne otvori automatski na toj adresi, onda:
+```
+BettingApp.Web > Properties > Web > Start Action > Start URL > http://localhost:8080 
+```
 Ako se ne pokrene sam preko Task Runner Explorera, izvršit Node naredbu:
 ```
 npm run dev
