@@ -4,6 +4,7 @@
     {
         HomeWin,
         Draw,
-        AwayWin
+        AwayWin,
+        WalkOver
     }
 }

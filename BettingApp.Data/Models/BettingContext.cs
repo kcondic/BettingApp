@@ -43,10 +43,15 @@ namespace BettingApp.Data.Models
                 .HasKey(x => new {x.TicketId, x.MatchId});
             modelBuilder.Entity<TicketMatch>()
                 .HasRequired(x => x.Ticket)
-                .WithMany(x => x.TicketMatches);
+                .WithMany(x => x.TicketMatches)
+                .HasForeignKey(x => x.TicketId);
             modelBuilder.Entity<TicketMatch>()
                 .HasRequired(x => x.Match)
-                .WithMany(x => x.TicketMatches);
+                .WithMany(x => x.TicketMatches)
+                .HasForeignKey(x => x.MatchId);
+
+            modelBuilder.Entity<User>()
+                .HasOptional(x => x.Wallet);
 
             base.OnModelCreating(modelBuilder);
         }
