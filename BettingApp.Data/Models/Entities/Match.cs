@@ -18,11 +18,11 @@ namespace BettingApp.Data.Models.Entities
         public DateTime TimeOfStart { get; set; }
         public Outcome Outcome { get; set; }
         [Range(1.01, Double.MaxValue)]
-        public double HomeWinOdd { get; set; }
+        public double? HomeWinOdd { get; set; }
         [Range(1.01, Double.MaxValue)]
-        public double DrawOdd { get; set; }
+        public double? DrawOdd { get; set; }
         [Range(1.01, Double.MaxValue)]
-        public double AwayWinOdd { get; set; }
+        public double? AwayWinOdd { get; set; }
         public ICollection<TicketMatch> TicketMatches { get; set; }
     }
 }

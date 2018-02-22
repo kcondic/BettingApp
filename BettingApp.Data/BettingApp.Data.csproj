@@ -49,6 +49,15 @@
   <ItemGroup>
     <Compile Include="Enums\Outcome.cs" />
     <Compile Include="Enums\Role.cs" />
+    <Compile Include="Enums\TransactionType.cs" />
+    <Compile Include="Initialization\BettingModelDbInitialization.cs" />
+    <Compile Include="Models\BettingContext.cs" />
+    <Compile Include="Models\Entities\Match.cs" />
+    <Compile Include="Models\Entities\Sport.cs" />
+    <Compile Include="Models\Entities\Team.cs" />
+    <Compile Include="Models\Entities\Ticket.cs" />
+    <Compile Include="Models\Entities\TicketMatch.cs" />
+    <Compile Include="Models\Entities\Transaction.cs" />
     <Compile Include="Models\Entities\User.cs" />
     <Compile Include="Models\Entities\Wallet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

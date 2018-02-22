@@ -2,8 +2,11 @@
 import Router from 'vue-router'
 import App from './components/App.vue'
 import Test from './components/Test.vue'
+import axios from 'axios'
 
 Vue.use(Router);
+Vue.use(axios);
+
 const routes = [
     {
         path: '/test', component: Test

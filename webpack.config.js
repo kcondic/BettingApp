@@ -57,7 +57,10 @@ module.exports = {
 		}
     },
 	devServer: {
-        contentBase: 'BettingApp.Web/Scripts/build'
+        contentBase: 'BettingApp.Web/Scripts/build',
+        headers: {
+            "Access-Control-Allow-Origin": "*"
+        }
 	},
 	plugins // set the previously defined plugins
 };

@@ -51,7 +51,8 @@ namespace BettingApp.Data.Models
                 .HasForeignKey(x => x.MatchId);
 
             modelBuilder.Entity<User>()
-                .HasOptional(x => x.Wallet);
+                .HasOptional(x => x.Wallet)
+                .WithRequired(x => x.Owner);
 
             base.OnModelCreating(modelBuilder);
         }

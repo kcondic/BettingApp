@@ -15,6 +15,5 @@ namespace BettingApp.Data.Models.Entities
         public string UserName { get; set; }
         public Role Role { get; set; }
         public Wallet Wallet { get; set; }
-        public int WalletId { get; set; }
     }
 }
