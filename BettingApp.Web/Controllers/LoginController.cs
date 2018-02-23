@@ -15,7 +15,6 @@ namespace BettingApp.Web.Controllers
         private readonly AuthRepository _authRepository;
 
         [HttpPost]
-        [Route("")]
         public IActionResult SignIn([FromBody]JObject usernameObject)
         {
             var username = usernameObject["username"].ToObject<string>();
