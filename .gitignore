@@ -286,3 +286,6 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+
+# Webpack bundled script
+/BettingApp.Web/wwwroot/build.js
