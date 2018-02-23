@@ -1,6 +1,5 @@
 ﻿<template>
     <div>
-        <router-link to="test">TESTT</router-link>
         <router-view class="view"
                      keep-alive
                      transition
