@@ -87,7 +87,7 @@ namespace BettingApp.Data.Initialization
                     HomeWinOdd = 2.2,
                     DrawOdd = 18,
                     AwayWinOdd = 1.6,
-                    TimeOfStart = DateTime.Now + TimeSpan.FromDays(1)
+                    TimeOfStart = DateTime.Now + TimeSpan.FromHours(1)
                 },
                 new Match()
                 {
@@ -96,7 +96,7 @@ namespace BettingApp.Data.Initialization
                     HomeWinOdd = 1.15,
                     DrawOdd = 2.5,
                     AwayWinOdd = 5,
-                    TimeOfStart = DateTime.Now + TimeSpan.FromDays(1)
+                    TimeOfStart = DateTime.Now + TimeSpan.FromHours(3)
                 },
                 new Match()
                 {
@@ -121,7 +121,7 @@ namespace BettingApp.Data.Initialization
                     AwayTeam = teams[15],
                     HomeWinOdd = 1.9,
                     AwayWinOdd = 1.9,
-                    TimeOfStart = DateTime.Now + TimeSpan.FromDays(1)
+                    TimeOfStart = DateTime.Now + TimeSpan.FromHours(1)
                 },
                 new Match()
                 {
