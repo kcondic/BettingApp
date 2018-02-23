@@ -1,20 +1,6 @@
 # BettingApp
 Short betting app with minimal functionalities in WebApi/Vue.js
 
-Pri otvaranju projekta se pokreće webpack dev server na localhost:8080.
-Ako se stranica ne otvori automatski na toj adresi, onda:
-```
-BettingApp.Web > Properties > Web > Start Action > Start URL > http://localhost:8080 
-```
-Ako se ne pokrene sam preko Task Runner Explorera, izvršit Node naredbu:
-```
-npm run dev
-```
-Za samo bundleanje/buildanje bez pokretanja servera:
-```
-npm run build
-```
-Ako izbacuje grešku oko block scoped deklaracija varijabli, napraviti iduće:
-```
-In the menu, go to Tools > Options > Projects and Solutions > Web Package Management > External Web Tools and DESELECT the option for $(VSINSTALLDIR)\Web\External.
-```
+Aplikacija je napravljena u .NET core zbog integracije backend i frontend servera.
+
+Nikakva konfiguracija osim npm install potrebna. F5 i pali.

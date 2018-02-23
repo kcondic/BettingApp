@@ -1,8 +1,8 @@
 let path = require('path');
 let webpack = require('webpack');
 
-let entryPoint = path.resolve(__dirname, 'BettingApp.Web/Scripts/app/main.js');
-let outputPath = path.resolve(__dirname, 'BettingApp.Web/Scripts/build');
+let entryPoint = path.resolve(__dirname, 'Scripts/app/main.js');
+let outputPath = path.resolve(__dirname, 'wwwroot');
 let fileName = 'build.js';
 
 let plugins = [];
@@ -28,39 +28,34 @@ if (env === 'production') {
 
 // Main webpack config
 module.exports = {
-	entry: {
-		app: [ entryPoint ]
-	},
-	output: {
-		path: outputPath,
-        filename: fileName
-	},
-	module: {
-		rules: [
-			{
-				test: /\.js$/,
-				exclude: /(node_modules|bower_components)/,
-				loader: 'babel-loader',
-				query: {
-					presets: ['es2015'] // Transpile the ES6 to es2015 standard
-				}
-			},
-			{
-				test: /\.vue$/,
-				loader: 'vue-loader'
-			}
-		]
-	},
-	resolve: {
-		alias: {
-			'vue$': 'vue/dist/vue.esm.js'  // Resolving the vue var for standalone build
-		}
+    entry: {
+        app: [entryPoint]
     },
-	devServer: {
-        contentBase: 'BettingApp.Web/Scripts/build',
-        headers: {
-            "Access-Control-Allow-Origin": "*"
+    output: {
+        path: outputPath,
+        filename: fileName,
+        publicPath: '/wwwroot/'
+    },
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /(node_modules|bower_components)/,
+                loader: 'babel-loader',
+                query: {
+                    presets: ['es2015'] // Transpile the ES6 to es2015 standard
+                }
+            },
+            {
+                test: /\.vue$/,
+                loader: 'vue-loader'
+            }
+        ]
+    },
+    resolve: {
+        alias: {
+            'vue$': 'vue/dist/vue.esm.js' // Resolving the vue var for standalone build
         }
-	},
+    },
 	plugins // set the previously defined plugins
 };

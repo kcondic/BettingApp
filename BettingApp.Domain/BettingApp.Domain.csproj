@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E1BEEF1B-52E0-4A12-8927-4B1DBAB83439}</ProjectGuid>
+    <ProjectGuid>{93656283-59F7-4081-84B4-A0E504A63629}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BettingApp.Domain</RootNamespace>
@@ -52,11 +52,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BettingApp.Data\BettingApp.Data.csproj">
-      <Project>{c0e7ea7d-d668-4325-9950-1a2655d66240}</Project>
+      <Project>{cf133afd-3f78-4d82-89b6-0999ad1ee929}</Project>
       <Name>BettingApp.Data</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />

@@ -11,7 +11,7 @@
         name: 'Test',
         data() {
             return {
-                message: 'Poruka',
+                message: 'Porukaaaa',
                 teams: axios.get('/test')
             }
         }

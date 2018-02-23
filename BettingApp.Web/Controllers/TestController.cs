@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using BettingApp.Domain.Repositories;
+﻿using BettingApp.Domain.Repositories;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BettingApp.Web.Controllers
 {
-    [RoutePrefix("test")]
-    public class TestController : ApiController
+    [Route("test")]
+    public class TestController : Controller
     {
         public TestController()
         {
@@ -20,7 +15,7 @@ namespace BettingApp.Web.Controllers
 
         [HttpGet]
         [Route("")]
-        public IHttpActionResult GetAllTeams()
+        public IActionResult GetAllTeams()
         {
             return Ok(_testRepository.GetTeams());
         }

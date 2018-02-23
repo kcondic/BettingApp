@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C0E7EA7D-D668-4325-9950-1A2655D66240}</ProjectGuid>
+    <ProjectGuid>{CF133AFD-3F78-4D82-89B6-0999AD1EE929}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BettingApp.Data</RootNamespace>

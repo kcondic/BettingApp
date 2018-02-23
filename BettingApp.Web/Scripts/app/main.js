@@ -13,7 +13,6 @@ const routes = [
     }
 ];
 
-
 const router = new Router({
     mode: 'history',
     routes // short for `routes: routes`
