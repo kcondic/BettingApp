@@ -16,7 +16,7 @@ namespace BettingApp.Data.Models.Entities
         public Team AwayTeam { get; set; }
         public int AwayTeamId { get; set; }
         public DateTime TimeOfStart { get; set; }
-        public Outcome Outcome { get; set; }
+        public Outcome? Outcome { get; set; }
         [Range(1.01, Double.MaxValue)]
         public double? HomeWinOdd { get; set; }
         [Range(1.01, Double.MaxValue)]
