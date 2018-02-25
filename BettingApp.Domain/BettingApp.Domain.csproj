@@ -52,6 +52,7 @@
     <Compile Include="Repositories\MatchRepository.cs" />
     <Compile Include="Repositories\SportRepository.cs" />
     <Compile Include="Repositories\TeamRepository.cs" />
+    <Compile Include="Repositories\TicketRepository.cs" />
     <Compile Include="Repositories\TransactionRepository.cs" />
     <Compile Include="Repositories\WalletRepository.cs" />
   </ItemGroup>

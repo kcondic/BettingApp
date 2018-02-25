@@ -16,11 +16,11 @@
                 {{match.homeTeam.name}} -
                 {{match.awayTeam.name}}
                 {{match.timeOfStart | formatDate}}
-                <span v-if="match.homeWinOdd" v-on:click.prevent="tipOnMatch(match, 0)">{{match.homeWinOdd}}</span>
+                <span v-if="match.homeWinOdd" v-on:click.prevent="tipOnMatch(match, 0, match.homeWinOdd)">{{match.homeWinOdd}}</span>
                 <span v-else>-</span>
-                <span v-if="match.drawOdd" v-on:click.prevent="tipOnMatch(match, 1)">{{match.drawOdd}}</span>
+                <span v-if="match.drawOdd" v-on:click.prevent="tipOnMatch(match, 1, match.drawOdd)">{{match.drawOdd}}</span>
                 <span v-else>-</span>
-                <span v-if="match.awayWinOdd" v-on:click.prevent="tipOnMatch(match, 2)">{{match.awayWinOdd}}</span>
+                <span v-if="match.awayWinOdd" v-on:click.prevent="tipOnMatch(match, 2, match.awayWinOdd)">{{match.awayWinOdd}}</span>
                 <span v-else>-</span>
             </div>
         </div>
@@ -28,25 +28,24 @@
             Listić
             <div v-for="(matchTip, index) in tips">
                 {{index+1}}.
-                {{matchTip.match.homeTeam.name}} -
-                {{matchTip.match.awayTeam.name}}
-                <span v-if="matchTip.tip === 0">
+                {{matchTip.match.homeTeamName}} -
+                {{matchTip.match.awayTeamName}}
+                <span v-if="matchTip.Tip === 0">
                     1
-                    {{matchTip.match.homeWinOdd}}
                 </span>
-                <span v-else-if="matchTip.tip === 1">
+                <span v-else-if="matchTip.Tip === 1">
                     X
-                    {{matchTip.match.drawOdd}}
                 </span>
                 <span v-else>
                     2
-                    {{matchTip.match.awayWinOdd}}
                 </span>
+                {{matchTip.odd}}
                 <span v-on:click.prevent="removeTip(matchTip)">❌</span>
             </div>
             <div>Ukupni koeficijent: {{totalOdd}}</div>
-            <div>Ulog: <input type="number" v-model="stake" /></div>
-            <div><button v-on:click.prevent>Uplati</button></div>
+            <div>Ulog: <input type="number" v-model="stake" min="2"/></div>
+            <div>Mogući dobitak: {{possibleWin}}</div>
+            <div><button v-on:click.prevent="placeBet()">Uplati</button></div>
         </form>
     </div>
 </template>
@@ -61,8 +60,13 @@
                 sports: [],
                 tips: [],
                 totalOdd: 1,
-                stake: 0,
+                stake: 2,
                 wallet: {}
+            }
+        },
+        computed: {
+            possibleWin: function () {
+                return Math.round(this.stake * this.totalOdd * 100) / 100;
             }
         },
         methods: {
@@ -84,55 +88,62 @@
                     this.sportsWithMatches = [response.data];
                     });
             },
-            tipOnMatch: function (match, tip) {
+            tipOnMatch: function (match, tip, odd) {
                 let indexOfExistingTip = this.tips.findIndex(tip => tip.match.id === match.id);              
                 if (indexOfExistingTip === -1) {
                     this.tips.push({
-                        match: match,
-                        tip: tip
+                        match: {
+                            id: match.id,
+                            homeTeamName: match.homeTeam.name,
+                            awayTeamName: match.awayTeam.name
+                        },
+                        tip: tip,
+                        odd: odd
                     });
-                    this.calculateOdds(match, tip, 'increase');
+                    this.calculateOdds(odd, 'increase');
                 }
                 else {
-                    this.calculateOdds(match, this.tips[indexOfExistingTip].tip, 'decrease');
+                    this.calculateOdds(this.tips[indexOfExistingTip].odd, 'decrease');
                     this.tips[indexOfExistingTip].tip = tip;
-                    this.calculateOdds(match, tip, 'increase');
+                    this.calculateOdds(odd, 'increase');
                 }
             },
             removeTip: function(matchTip) {
                 this.tips.splice(this.tips.indexOf(matchTip), 1);
-                this.calculateOdds(matchTip.match, matchTip.tip, 'decrease');
+                this.calculateOdds(matchTip.odd, 'decrease');
             },
-            calculateOdds: function (match, tip, operation) {
-                switch (operation) {
-                    case 'increase':
-                        switch (tip) {
-                            case 0:
-                                this.totalOdd *= match.homeWinOdd;
-                                break;
-                            case 1:
-                                this.totalOdd *= match.drawOdd;
-                                break;
-                            case 2:
-                                this.totalOdd *= match.awayWinOdd;
-                                break;
-                        }
-                        break;
-                    case 'decrease':
-                        switch (tip) {
-                            case 0:
-                                this.totalOdd /= match.homeWinOdd;
-                                break;
-                            case 1:
-                                this.totalOdd /= match.drawOdd;
-                                break;
-                            case 2:
-                                this.totalOdd /= match.awayWinOdd;
-                                break;
-                        }
-                        break;
-                }
+            calculateOdds: function (odd, operation) {
+                if (operation === 'increase')
+                    this.totalOdd *= odd;
+                else
+                    this.totalOdd /= odd;
                 this.totalOdd = Math.round(this.totalOdd * 100) / 100;
+            },
+            placeBet: function () {
+                const ticketMatches = [];
+                for (let matchTip of this.tips)
+                    ticketMatches.push({
+                        MatchId: matchTip.match.id,
+                        Tip: matchTip.tip,
+                        PlacedOdd: matchTip.odd
+                    });
+                const newTicket = {
+                    Wallet: this.wallet,
+                    TicketMatches: ticketMatches,
+                    Stake: this.stake,
+                    TotalOdd: this.totalOdd
+                };
+                axios.post('/api/user/bet',
+
+                        newTicket
+
+                ).then(response => {
+                    alert('Listić uspješno uplaćen.');
+                    this.tips = [];
+                }).catch(error => {
+                    alert('Listić nije uplaćen. Nemate dovoljno\n' +
+                        'sredstava ili Vam je zabranjen pristup');
+                });
             }
         },
         created() {

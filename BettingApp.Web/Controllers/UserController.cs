@@ -7,6 +7,7 @@ using BettingApp.Data.Enums;
 using BettingApp.Data.Models.Entities;
 using BettingApp.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace BettingApp.Web.Controllers
 {
@@ -17,9 +18,11 @@ namespace BettingApp.Web.Controllers
         {
             _walletRepository = new WalletRepository();
             _transactionRepository = new TransactionRepository();
+            _ticketRepository = new TicketRepository();
         }
         private readonly WalletRepository _walletRepository;
         private readonly TransactionRepository _transactionRepository;
+        private readonly TicketRepository _ticketRepository;
 
         [HttpGet]
         public IActionResult GetWallet(int userId)
@@ -45,20 +48,21 @@ namespace BettingApp.Web.Controllers
             return Ok(_transactionRepository.GetWalletTransactions(walletId));
         }
 
-        //[HttpGet]
-        //[Route("bet")]
-        //public IActionResult GetBets(int userId)
-        //{
+        [HttpGet]
+        [Route("bet")]
+        public IActionResult GetTickets(int walletId)
+        {
+            return Ok(_ticketRepository.GetTickets(walletId));
+        }
 
-        //}
-
-        //[HttpPost]
-        //[Route("bet")]
-        //public IActionResult MakeBet(int userId, Ticket ticketToPlace)
-        //{
-
-        //}
-
-
+        [HttpPost]
+        [Route("bet")]
+        public IActionResult PlaceBet([FromBody]Ticket ticketToPlace)
+        {
+            var wasTicketPlaced = _ticketRepository.PlaceBet(ticketToPlace);
+            if (!wasTicketPlaced)
+                return Forbid();
+            return Ok();
+        }
     }
 }
