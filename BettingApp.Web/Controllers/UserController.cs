@@ -45,19 +45,19 @@ namespace BettingApp.Web.Controllers
             return Ok(_transactionRepository.GetWalletTransactions(walletId));
         }
 
-        [HttpGet]
-        [Route("bet")]
-        public IActionResult GetBets(int userId)
-        {
+        //[HttpGet]
+        //[Route("bet")]
+        //public IActionResult GetBets(int userId)
+        //{
 
-        }
+        //}
 
-        [HttpPost]
-        [Route("bet")]
-        public IActionResult MakeBet(int userId, Ticket ticketToPlace)
-        {
+        //[HttpPost]
+        //[Route("bet")]
+        //public IActionResult MakeBet(int userId, Ticket ticketToPlace)
+        //{
 
-        }
+        //}
 
 
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using BettingApp.Data.Enums;
@@ -17,19 +18,27 @@ namespace BettingApp.Domain.Repositories
             using (var context = new BettingContext())
                 return context.Matches
                               .Include(match => match.HomeTeam)
+                              .Include(match => match.AwayTeam)
                               .Where(match => DateTime.Now < match.TimeOfStart 
                                             && match.HomeTeam.SportId == sportId)
-                              .OrderBy(match => match.TimeOfStart);
+                              .OrderBy(match => match.TimeOfStart).ToList();
         }
 
-        public IEnumerable<IGrouping<Sport, Match>> GetMatchesForSpecificDay(DateTime dayOfMatches)
+        public IEnumerable<IGrouping<Sport, Match>> GetMatchesForSpecificDay(string dayOfMatches)
         {
             using (var context = new BettingContext())
-                return context.Matches
-                              .Include(match => match.HomeTeam.Sport)
-                              .Where(match => match.TimeOfStart.Day == dayOfMatches.Day 
-                                              && DateTime.Now < match.TimeOfStart)
-                              .GroupBy(match => match.HomeTeam.Sport, match => match);
+            {
+                var currentTime = DateTime.Now;
+                var tomorrow = DateTime.Today.AddDays(1);
+                var dayAfterTomorrow = DateTime.Today.AddDays(2);
+
+                    return context.Matches
+                        .Include(match => match.HomeTeam)
+                        .Include(match => match.HomeTeam.Sport)
+                        .Include(match => match.AwayTeam)
+                        .Where(match => dayOfMatches == "today" ? match.TimeOfStart > currentTime && match.TimeOfStart < tomorrow : match.TimeOfStart > tomorrow && match.TimeOfStart < dayAfterTomorrow)
+                        .ToList().GroupBy(match => match.HomeTeam.Sport, match => match);
+            }
         }
 
         public bool AddNewMatch(Match matchToAdd)

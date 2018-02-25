@@ -13,7 +13,7 @@ namespace BettingApp.Domain.Repositories
         public IEnumerable<Sport> GetSports()
         {
             using (var context = new BettingContext())
-                return context.Sports;
+                return context.Sports.ToList();
         }
 
         public void AddSport(Sport sportToAdd)

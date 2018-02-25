@@ -78,13 +78,6 @@ namespace BettingApp.Web.Controllers
             return Ok(true);
         }
 
-        [HttpGet]
-        [Route("sports")]
-        public IActionResult GetSports()
-        {
-            return Ok(_sportRepository.GetSports());
-        }
-
         [HttpPost]
         [Route("sports")]
         public IActionResult AddSport(Sport sportToAdd)

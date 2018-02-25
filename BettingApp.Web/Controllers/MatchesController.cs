@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BettingApp.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace BettingApp.Web.Controllers
 {
@@ -13,8 +14,10 @@ namespace BettingApp.Web.Controllers
         public MatchesController()
         {
             _matchRepository = new MatchRepository();
+            _sportRepository = new SportRepository();
         }
         private readonly MatchRepository _matchRepository;
+        private readonly SportRepository _sportRepository;
 
         [HttpGet]
         [Route("sport")]
@@ -24,8 +27,15 @@ namespace BettingApp.Web.Controllers
         }
 
         [HttpGet]
+        [Route("sports")]
+        public IActionResult GetSports()
+        {
+            return Ok(_sportRepository.GetSports());
+        }
+
+        [HttpGet]
         [Route("day")]
-        public IActionResult GetMatchesForSpecificDay(DateTime dayOfMatches)
+        public IActionResult GetMatchesForSpecificDay(string dayOfMatches)
         {
             return Ok(_matchRepository.GetMatchesForSpecificDay(dayOfMatches));
         }

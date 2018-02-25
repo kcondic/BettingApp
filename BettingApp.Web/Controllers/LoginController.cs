@@ -5,13 +5,12 @@ using Newtonsoft.Json.Linq;
 namespace BettingApp.Web.Controllers
 {
     [Route("api/login")]
-    public class TestController : Controller
+    public class LoginController : Controller
     {
-        public TestController()
+        public LoginController()
         {
             _authRepository = new AuthRepository();
         }
-
         private readonly AuthRepository _authRepository;
 
         [HttpPost]

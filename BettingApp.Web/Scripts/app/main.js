@@ -1,7 +1,8 @@
 ﻿import Vue from 'vue';
 import Router from 'vue-router';
-import App from './components/App.vue';
 import axios from 'axios';
+import moment from 'moment';
+import App from './components/App.vue';
 import Home from './components/Home.vue'
 import Login from './components/auth/Login.vue';
 import User from './components/user/layout/User.vue';
@@ -15,6 +16,12 @@ import AdminSports from './components/admin/subroutes/AdminSports.vue';
 
 Vue.use(Router);
 Vue.use(axios);
+
+Vue.filter('formatDate', function (value) {
+    if (value) {
+        return moment(String(value)).format('DD.MM. HH:mm');
+    }
+});
 
 const routes = [
     {
