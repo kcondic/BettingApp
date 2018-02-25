@@ -12,15 +12,20 @@ namespace BettingApp.Domain.Repositories
 {
     public class TicketRepository
     {
-        public IEnumerable<Ticket> GetTickets(int walletId)
+        public IEnumerable<Ticket> GetTickets(int userId)
         {
             using (var context = new BettingContext())
+            {
+                var walletOfUser = context.Wallets
+                                          .Include(wallet => wallet.Owner)
+                                          .SingleOrDefault(wallet => wallet.Owner.Id == userId);
                 return context.Tickets
-                              .Include(ticket => ticket.TicketMatches)
-                              .Include(ticket => ticket.TicketMatches.Select(ticketMatch => ticketMatch.Match))
-                              .Include(ticket => ticket.TicketMatches.Select(ticketMatch => ticketMatch.Match.HomeTeam.Name))
-                              .Include(ticket => ticket.TicketMatches.Select(ticketMatch => ticketMatch.Match.AwayTeam.Name))
-                              .Where(ticket => ticket.WalletId == walletId);
+                    .Include(ticket => ticket.TicketMatches)
+                    .Include(ticket => ticket.TicketMatches.Select(ticketMatch => ticketMatch.Match))
+                    .Include(ticket => ticket.TicketMatches.Select(ticketMatch => ticketMatch.Match.HomeTeam))
+                    .Include(ticket => ticket.TicketMatches.Select(ticketMatch => ticketMatch.Match.AwayTeam))
+                    .Where(ticket => ticket.WalletId == walletOfUser.Id).ToList();
+            }
         }
 
         public bool PlaceBet(Ticket ticketToPlace)
@@ -53,6 +58,7 @@ namespace BettingApp.Domain.Repositories
                 }
                 if (Math.Abs(totalOdd - ticketToPlace.TotalOdd) > 0.1)
                     return false;
+                ticketToPlace.Wallet.Funds -= ticketToPlace.Stake;
                 context.Tickets.Add(ticketToPlace);
                 context.SaveChanges();
                 return true;

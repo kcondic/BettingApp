@@ -49,10 +49,10 @@ namespace BettingApp.Web.Controllers
         }
 
         [HttpGet]
-        [Route("bet")]
-        public IActionResult GetTickets(int walletId)
+        [Route("tickets")]
+        public IActionResult GetTickets(int userId)
         {
-            return Ok(_ticketRepository.GetTickets(walletId));
+            return Ok(_ticketRepository.GetTickets(userId));
         }
 
         [HttpPost]
@@ -62,6 +62,7 @@ namespace BettingApp.Web.Controllers
             var wasTicketPlaced = _ticketRepository.PlaceBet(ticketToPlace);
             if (!wasTicketPlaced)
                 return Forbid();
+            _transactionRepository.AddTransaction(ticketToPlace.Wallet.Id, ticketToPlace.Stake, TransactionType.Bet);
             return Ok();
         }
     }

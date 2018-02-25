@@ -43,8 +43,8 @@
                 <span v-on:click.prevent="removeTip(matchTip)">❌</span>
             </div>
             <div>Ukupni koeficijent: {{totalOdd}}</div>
-            <div>Ulog: <input type="number" v-model="stake" min="2"/></div>
-            <div>Mogući dobitak: {{possibleWin}}</div>
+            <div>Ulog: <input type="number" v-model="stake" min="2"/> kn</div>
+            <div>Mogući dobitak: {{possibleWin}} kn</div>
             <div><button v-on:click.prevent="placeBet()">Uplati</button></div>
         </form>
     </div>
@@ -133,16 +133,14 @@
                     Stake: this.stake,
                     TotalOdd: this.totalOdd
                 };
-                axios.post('/api/user/bet',
-
-                        newTicket
-
-                ).then(response => {
-                    alert('Listić uspješno uplaćen.');
-                    this.tips = [];
+                axios.post('/api/user/bet', newTicket)
+                    .then(response => {
+                        alert('Listić uspješno uplaćen.');
+                        this.wallet.funds -= this.stake;
+                        this.tips = [];
                 }).catch(error => {
                     alert('Listić nije uplaćen. Nemate dovoljno\n' +
-                        'sredstava ili Vam je zabranjen pristup');
+                        'sredstava ili Vam je zabranjen pristup.');
                 });
             }
         },

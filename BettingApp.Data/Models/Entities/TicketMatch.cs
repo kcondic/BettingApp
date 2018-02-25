@@ -15,6 +15,5 @@ namespace BettingApp.Data.Models.Entities
         public int MatchId { get; set; }
         public Outcome Tip { get; set; }
         public double PlacedOdd { get; set; }
-        public bool DidPass { get; set; }
     }
 }
