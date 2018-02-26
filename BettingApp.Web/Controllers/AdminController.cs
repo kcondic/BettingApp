@@ -73,7 +73,7 @@ namespace BettingApp.Web.Controllers
 
         [HttpPost]
         [Route("sports")]
-        public IActionResult AddSport(Sport sportToAdd)
+        public IActionResult AddSport([FromBody]Sport sportToAdd)
         {
             _sportRepository.AddSport(sportToAdd);
             return Ok(true);
