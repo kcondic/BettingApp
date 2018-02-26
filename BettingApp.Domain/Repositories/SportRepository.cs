@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
 using BettingApp.Data.Models;
@@ -13,7 +14,9 @@ namespace BettingApp.Domain.Repositories
         public IEnumerable<Sport> GetSports()
         {
             using (var context = new BettingContext())
-                return context.Sports.ToList();
+                return context.Sports
+                              .Include(sport => sport.Teams)
+                              .ToList();
         }
 
         public void AddSport(Sport sportToAdd)

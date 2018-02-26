@@ -36,7 +36,9 @@ namespace BettingApp.Domain.Repositories
                         .Include(match => match.HomeTeam)
                         .Include(match => match.HomeTeam.Sport)
                         .Include(match => match.AwayTeam)
-                        .Where(match => dayOfMatches == "today" ? match.TimeOfStart > currentTime && match.TimeOfStart < tomorrow : match.TimeOfStart > tomorrow && match.TimeOfStart < dayAfterTomorrow)
+                        .Where(match => dayOfMatches == "today" ? 
+                            match.TimeOfStart > currentTime && match.TimeOfStart < tomorrow : 
+                            match.TimeOfStart > tomorrow && match.TimeOfStart < dayAfterTomorrow)
                         .ToList().GroupBy(match => match.HomeTeam.Sport, match => match);
             }
         }

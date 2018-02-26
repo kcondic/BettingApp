@@ -11,14 +11,6 @@ namespace BettingApp.Domain.Repositories
 {
     public class TeamRepository
     {
-        public IEnumerable<IGrouping<Sport, Team>> GetTeamsBySport()
-        {
-            using (var context = new BettingContext())
-                return context.Teams
-                              .Include(team => team.Sport)
-                              .GroupBy(team => team.Sport, team => team);
-        }
-
         public bool AddTeam(Team teamToAdd)
         {
             using (var context = new BettingContext())

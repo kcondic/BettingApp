@@ -61,16 +61,9 @@ namespace BettingApp.Web.Controllers
             return Ok(true);
         }
 
-        [HttpGet]
-        [Route("teams")]
-        public IActionResult GetTeamsBySport()
-        {
-            return Ok(_teamRepository.GetTeamsBySport());
-        }
-
         [HttpPost]
         [Route("teams")]
-        public IActionResult AddTeam(Team teamToAdd)
+        public IActionResult AddTeam([FromBody]Team teamToAdd)
         {
             var wasTeamAdded = _teamRepository.AddTeam(teamToAdd);
             if (!wasTeamAdded)

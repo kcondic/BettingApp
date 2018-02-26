@@ -27,17 +27,17 @@ namespace BettingApp.Web.Controllers
         }
 
         [HttpGet]
-        [Route("sports")]
-        public IActionResult GetSports()
-        {
-            return Ok(_sportRepository.GetSports());
-        }
-
-        [HttpGet]
         [Route("day")]
         public IActionResult GetMatchesForSpecificDay(string dayOfMatches)
         {
             return Ok(_matchRepository.GetMatchesForSpecificDay(dayOfMatches));
+        }
+
+        [HttpGet]
+        [Route("sports")]
+        public IActionResult GetSports()
+        {
+            return Ok(_sportRepository.GetSports());
         }
     }
 }

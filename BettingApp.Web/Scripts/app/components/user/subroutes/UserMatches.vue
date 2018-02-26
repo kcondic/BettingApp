@@ -2,8 +2,8 @@
     <div>
         <span v-on:click.prevent="getByDay('today')">Današnje oklade</span>
         <span v-on:click.prevent="getByDay('tomorrow')">Sutrašnje oklade</span>
-        <select>
-            <option>Oklade po sportu</option>
+        <select v-model="selected">
+            <option disabled value="">Oklade po sportu</option>
             <option v-for="sport in sports" 
                 v-on:click.prevent="getForSport(sport.id)">
                 {{sport.name}}</option>
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-    import axios from 'axios'
+    import axios from 'axios';
     export default {
         name: 'UserMatches',
         data() {
@@ -59,6 +59,7 @@
                 sportsWithMatches: [],
                 sports: [],
                 tips: [],
+                selected: '',
                 totalOdd: 1,
                 stake: 2,
                 wallet: {}
@@ -71,6 +72,7 @@
         },
         methods: {
             getByDay: function (dayName) {
+                this.selected = '';
                 axios.get('/api/matches/day', {
                     params: {
                         dayOfMatches: dayName
