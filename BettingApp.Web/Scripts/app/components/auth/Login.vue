@@ -25,6 +25,7 @@
                     }
                 ).then(response => {
                     localStorage.setItem("userId", response.data.id);
+                    localStorage.setItem("walletId", response.data.wallet.id);
                     if (response.data.role)
                         this.$router.push('admin');
                     else

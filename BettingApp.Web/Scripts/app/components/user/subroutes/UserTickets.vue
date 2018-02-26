@@ -43,10 +43,10 @@
             }
         },
         created() {
-            let userId = localStorage.getItem('userId');
+            let walletId = localStorage.getItem('walletId');
             axios.get('/api/user/tickets', {
                 params: {
-                    userId: userId
+                    walletId: walletId
                 }
             }).then(response => {
                 this.tickets = response.data;

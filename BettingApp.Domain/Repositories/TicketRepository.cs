@@ -12,20 +12,16 @@ namespace BettingApp.Domain.Repositories
 {
     public class TicketRepository
     {
-        public IEnumerable<Ticket> GetTickets(int userId)
+        public IEnumerable<Ticket> GetTickets(int walletId)
         {
             using (var context = new BettingContext())
-            {
-                var walletOfUser = context.Wallets
-                                          .Include(wallet => wallet.Owner)
-                                          .SingleOrDefault(wallet => wallet.Owner.Id == userId);
                 return context.Tickets
                     .Include(ticket => ticket.TicketMatches)
                     .Include(ticket => ticket.TicketMatches.Select(ticketMatch => ticketMatch.Match))
                     .Include(ticket => ticket.TicketMatches.Select(ticketMatch => ticketMatch.Match.HomeTeam))
                     .Include(ticket => ticket.TicketMatches.Select(ticketMatch => ticketMatch.Match.AwayTeam))
-                    .Where(ticket => ticket.WalletId == walletOfUser.Id).ToList();
-            }
+                    .Where(ticket => ticket.WalletId == walletId).ToList();
+
         }
 
         public bool PlaceBet(Ticket ticketToPlace)

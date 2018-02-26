@@ -32,8 +32,10 @@ namespace BettingApp.Web.Controllers
 
         [HttpPost]
         [Route("wallet")]
-        public IActionResult FundsPayment(int walletId, double fundsToGrant)
+        public IActionResult FundsPayment([FromBody]JObject paymentInfoObject)
         {
+            var walletId = paymentInfoObject["walletId"].ToObject<int>();
+            var fundsToGrant = paymentInfoObject["fundsToGrant"].ToObject<double>();
             var wereFundsGranted = _walletRepository.FundsPayment(walletId, fundsToGrant);
             if (!wereFundsGranted)
                 return NotFound();
@@ -50,9 +52,9 @@ namespace BettingApp.Web.Controllers
 
         [HttpGet]
         [Route("tickets")]
-        public IActionResult GetTickets(int userId)
+        public IActionResult GetTickets(int walletId)
         {
-            return Ok(_ticketRepository.GetTickets(userId));
+            return Ok(_ticketRepository.GetTickets(walletId));
         }
 
         [HttpPost]

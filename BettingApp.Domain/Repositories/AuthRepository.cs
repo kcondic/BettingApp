@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
 using BettingApp.Data.Models;
@@ -13,7 +14,9 @@ namespace BettingApp.Domain.Repositories
         public User SignIn(string username)
         {
             using (var context = new BettingContext())
-                return context.Users.SingleOrDefault(user => user.UserName == username);
+                return context.Users
+                              .Include(user => user.Wallet)
+                              .SingleOrDefault(user => user.UserName == username);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
 using BettingApp.Data.Enums;
@@ -32,7 +33,8 @@ namespace BettingApp.Domain.Repositories
             using (var context = new BettingContext())
                 return context.Transactions
                               .Where(transaction => transaction.WalletId == walletId)
-                              .OrderByDescending(transaction => transaction.TimeOfTransaction);
+                              .OrderByDescending(transaction => transaction.TimeOfTransaction)
+                              .ToList();    
         }
     }
 }

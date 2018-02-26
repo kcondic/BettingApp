@@ -31,7 +31,7 @@ namespace BettingApp.Domain.Repositories
             using (var context = new BettingContext())
             {
                 var wallet = context.Wallets.Find(walletId);
-                if (wallet == null)
+                if (wallet == null || fundsToGrant < 10)
                     return false;
                 wallet.Funds += fundsToGrant;
                 context.SaveChanges();
