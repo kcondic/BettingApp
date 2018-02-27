@@ -9,7 +9,9 @@
         </div>
         <form>
             Dodaj novi sport
-            <input type="text" v-model="newSportName"/>
+            <input type="text" v-model="newSportName" />
+            <input type="checkbox" v-model="isDrawPossible"/>
+            <label for="checkbox">Remi moguć?</label>
             <button v-on:click.prevent="addNewSport()">Dodaj</button>
         </form>
     </div>
@@ -22,13 +24,15 @@
         data() {
             return {
                 sports: [],
-                newSportName: ''
+                newSportName: '',
+                isDrawPossible: true
             }
         },
         methods: {
             addNewSport: function () {
                 const newSport = {
-                    Name: this.newSportName
+                    Name: this.newSportName,
+                    IsDrawPossible: this.isDrawPossible
                 };
                 axios.post('/api/admin/sports', newSport)
                     .then(response => {

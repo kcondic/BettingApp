@@ -11,7 +11,7 @@ namespace BettingApp.Domain.Repositories
 {
     public class SportRepository
     {
-        public IEnumerable<Sport> GetSports()
+        public List<Sport> GetSports()
         {
             using (var context = new BettingContext())
                 return context.Sports

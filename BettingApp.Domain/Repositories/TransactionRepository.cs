@@ -28,13 +28,28 @@ namespace BettingApp.Domain.Repositories
             }
         }
 
-        public IEnumerable<Transaction> GetWalletTransactions(int walletId)
+        public List<Transaction> GetWalletTransactions(int walletId)
         {
             using (var context = new BettingContext())
                 return context.Transactions
                               .Where(transaction => transaction.WalletId == walletId)
                               .OrderByDescending(transaction => transaction.TimeOfTransaction)
                               .ToList();    
+        }
+
+        public void PayWinningBet(int winningTicketId)
+        {
+            using (var context = new BettingContext())
+            {
+                var winningTicket = context.Tickets
+                                           .Include(ticket => ticket.Wallet)
+                                           .SingleOrDefault(ticket => ticket.Id == winningTicketId);
+                if (winningTicket == null || winningTicket.Wallet == null || winningTicket.Payout == null)
+                    return;
+                winningTicket.Wallet.Funds += (double)winningTicket.Payout;
+                context.SaveChanges();
+                AddTransaction(winningTicket.Wallet.Id, (double)winningTicket.Payout, TransactionType.Payout);
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BettingApp.Data.Models.Entities;
 using BettingApp.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace BettingApp.Web.Controllers
 {
@@ -16,14 +17,23 @@ namespace BettingApp.Web.Controllers
             _matchRepository = new MatchRepository();
             _teamRepository = new TeamRepository();
             _sportRepository = new SportRepository();
+            _ticketRepository = new TicketRepository();
         }
         private readonly MatchRepository _matchRepository;
         private readonly TeamRepository _teamRepository;
         private readonly SportRepository _sportRepository;
+        private readonly TicketRepository _ticketRepository;
+
+        [HttpGet]
+        [Route("matches")]
+        public IActionResult GetMatchesWithoutOutcome()
+        {
+            return Ok(_matchRepository.GetMatchesWithoutOutcome());
+        }
 
         [HttpPost]
         [Route("matches")]
-        public IActionResult AddNewMatch(Match matchToAdd)
+        public IActionResult AddNewMatch([FromBody]Match matchToAdd)
         {
             var wasMatchAdded = _matchRepository.AddNewMatch(matchToAdd);
             if (!wasMatchAdded)
@@ -33,8 +43,11 @@ namespace BettingApp.Web.Controllers
 
         [HttpPost]
         [Route("matches/odds")]
-        public IActionResult ChangeMatchOdds(int matchId, int oddToChange, double newOdd)
+        public IActionResult ChangeMatchOdd([FromBody]JObject oddToChangeObject)
         {
+            var matchId = oddToChangeObject["matchId"].ToObject<int>();
+            var oddToChange = oddToChangeObject["oddToChange"].ToObject<int>();
+            var newOdd = oddToChangeObject["newOdd"].ToObject<double>();
             var wasOddChanged = _matchRepository.ChangeMatchOdds(matchId, oddToChange, newOdd);
             if (!wasOddChanged)
                 return Forbid();
@@ -42,22 +55,15 @@ namespace BettingApp.Web.Controllers
         }
 
         [HttpPost]
-        [Route("matches/time")]
-        public IActionResult ChangeMatchDateTime(int matchId, DateTime newDateTime)
-        {
-            var wasTimeChanged = _matchRepository.ChangeMatchDateTime(matchId, newDateTime);
-            if (!wasTimeChanged)
-                return Forbid();
-            return Ok(true);
-        }
-
-        [HttpPost]
         [Route("matches/outcome")]
-        public IActionResult SetMatchOutcome(int matchId, int outcomeType)
+        public IActionResult SetMatchOutcome([FromBody]JObject matchOutcomeObject)
         {
-            var wasOutcomeSet = _matchRepository.SetMatchOutcome(matchId, outcomeType);
+            var matchId = matchOutcomeObject["matchId"].ToObject<int>();
+            var outcome = matchOutcomeObject["outcome"].ToObject<int>();
+            var wasOutcomeSet = _matchRepository.SetMatchOutcome(matchId, outcome);
             if (!wasOutcomeSet)
                 return Forbid();
+            _ticketRepository.CheckWinningLosingTickets(matchId);
             return Ok(true);
         }
 

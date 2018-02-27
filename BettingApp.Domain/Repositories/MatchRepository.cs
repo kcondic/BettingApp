@@ -13,15 +13,17 @@ namespace BettingApp.Domain.Repositories
 {
     public class MatchRepository
     {
-        public IEnumerable<Match> GetMatchesForSport(int sportId)
+        public List<Match> GetMatchesForSport(int sportId)
         {
             using (var context = new BettingContext())
                 return context.Matches
                               .Include(match => match.HomeTeam)
                               .Include(match => match.AwayTeam)
                               .Where(match => DateTime.Now < match.TimeOfStart 
-                                            && match.HomeTeam.SportId == sportId)
-                              .OrderBy(match => match.TimeOfStart).ToList();
+                                            && match.HomeTeam.SportId == sportId
+                                            && match.Outcome == null)
+                              .OrderBy(match => match.TimeOfStart)
+                              .ToList();
         }
 
         public IEnumerable<IGrouping<Sport, Match>> GetMatchesForSpecificDay(string dayOfMatches)
@@ -32,15 +34,37 @@ namespace BettingApp.Domain.Repositories
                 var tomorrow = DateTime.Today.AddDays(1);
                 var dayAfterTomorrow = DateTime.Today.AddDays(2);
 
+                if(dayOfMatches == "today")
                     return context.Matches
                         .Include(match => match.HomeTeam)
                         .Include(match => match.HomeTeam.Sport)
                         .Include(match => match.AwayTeam)
-                        .Where(match => dayOfMatches == "today" ? 
-                            match.TimeOfStart > currentTime && match.TimeOfStart < tomorrow : 
-                            match.TimeOfStart > tomorrow && match.TimeOfStart < dayAfterTomorrow)
-                        .ToList().GroupBy(match => match.HomeTeam.Sport, match => match);
+                        .Where(match => match.Outcome == null &&
+                                        match.TimeOfStart > currentTime && 
+                                        match.TimeOfStart < tomorrow)
+                        .ToList()
+                        .GroupBy(match => match.HomeTeam.Sport, match => match);
+                
+                return context.Matches
+                    .Include(match => match.HomeTeam)
+                    .Include(match => match.HomeTeam.Sport)
+                    .Include(match => match.AwayTeam)
+                    .Where(match => match.Outcome == null &&
+                                    match.TimeOfStart > tomorrow && 
+                                    match.TimeOfStart < dayAfterTomorrow)
+                    .ToList()
+                    .GroupBy(match => match.HomeTeam.Sport, match => match);
             }
+        }
+
+        public List<Match> GetMatchesWithoutOutcome()
+        {
+            using (var context = new BettingContext())
+                return context.Matches
+                              .Include(match => match.HomeTeam)
+                              .Include(match => match.AwayTeam)
+                              .Where(match => match.Outcome == null)
+                              .ToList();
         }
 
         public bool AddNewMatch(Match matchToAdd)
@@ -87,25 +111,17 @@ namespace BettingApp.Domain.Repositories
             }
         }
 
-        public bool ChangeMatchDateTime(int matchId, DateTime newDateTime)
-        {
-            using (var context = new BettingContext())
-            {
-                var matchToChange = context.Matches.Find(matchId);
-                if (matchToChange == null || matchToChange.TimeOfStart < DateTime.Now)
-                    return false;
-                matchToChange.TimeOfStart = newDateTime;
-                context.SaveChanges();
-                return true;
-            }
-        }
-
         public bool SetMatchOutcome(int matchId, int outcomeType)
         {
             using (var context = new BettingContext())
             {
-                var matchToChange = context.Matches.Find(matchId);
-                if (matchToChange == null || matchToChange.Outcome != null)
+                var matchToChange = context.Matches
+                                           .Include(match => match.HomeTeam)
+                                           .Include(match => match.HomeTeam.Sport)
+                                           .SingleOrDefault(match => match.Id == matchId);
+                var outcome = (Outcome)outcomeType;
+                if (matchToChange == null || matchToChange.Outcome != null || 
+                    !matchToChange.HomeTeam.Sport.IsDrawPossible && outcome == Outcome.Draw)
                     return false;
                 matchToChange.Outcome = (Outcome)outcomeType;
                 context.SaveChanges();

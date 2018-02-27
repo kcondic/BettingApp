@@ -10,7 +10,7 @@
         </select>
         <span>Sredstva za klađenje: {{wallet.funds}} kn</span>
         <div v-for="sport in sportsWithMatches">
-            <span v-if="sport[0].homeTeam.sport">{{sport[0].homeTeam.sport.name}}</span>
+            <span v-if="sport[0] && sport[0].homeTeam.sport">{{sport[0].homeTeam.sport.name}}</span>
             <span class="tips">1 X 2</span>
             <div v-for="match in sport">
                 {{match.homeTeam.name}} -
@@ -43,7 +43,7 @@
                 <span v-on:click.prevent="removeTip(matchTip)">❌</span>
             </div>
             <div>Ukupni koeficijent: {{totalOdd}}</div>
-            <div>Ulog: <input type="number" v-model="stake" min="2"/> kn</div>
+            <div>Ulog: <input type="number" v-model.number="stake" min="2"/> kn</div>
             <div>Mogući dobitak: {{possibleWin}} kn</div>
             <div><button v-on:click.prevent="placeBet()">Uplati</button></div>
         </form>
@@ -139,6 +139,7 @@
                     .then(response => {
                         alert('Listić uspješno uplaćen.');
                         this.wallet.funds -= this.stake;
+                        this.totalOdd = 1;
                         this.tips = [];
                 }).catch(error => {
                     alert('Listić nije uplaćen. Nemate dovoljno\n' +

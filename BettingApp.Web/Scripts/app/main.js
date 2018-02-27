@@ -64,8 +64,9 @@ const router = new Router({
 });
 
 /* eslint-disable no-new */
-const app = new Vue({
+new Vue({
     el: '#app',
     router,
-    render: h => h(App)
+    components: { App },
+    template: '<App/>'
 });

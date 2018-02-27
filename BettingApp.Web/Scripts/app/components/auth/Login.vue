@@ -32,7 +32,8 @@
                         this.$router.push('user');
                     }
                     }).catch(error => {
-                        alert("Neispravni korisnički podaci.");    });
+                        alert("Neispravni korisnički podaci.");
+                    });
             }
         }
     }

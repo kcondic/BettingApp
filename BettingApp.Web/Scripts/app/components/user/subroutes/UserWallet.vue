@@ -1,7 +1,7 @@
 ﻿<template>
     <div>
         <form>Uplati sredstva: 
-        <input type="number" v-model="payment" min="10"/>
+        <input type="number" v-model.number="payment" min="10"/>
         <button v-on:click.prevent="fundsPayment()">Uplati</button>
         </form>
         <div v-for="transaction in transactions">
