@@ -62,6 +62,7 @@ namespace BettingApp.Domain.Repositories
             using (var context = new BettingContext())
                 return context.Matches
                               .Include(match => match.HomeTeam)
+                              .Include(match => match.HomeTeam.Sport)
                               .Include(match => match.AwayTeam)
                               .Where(match => match.Outcome == null)
                               .ToList();
@@ -71,8 +72,15 @@ namespace BettingApp.Domain.Repositories
         {
             using (var context = new BettingContext())
             {
-                if (matchToAdd.TimeOfStart < DateTime.Now || matchToAdd.HomeTeam.Sport != matchToAdd.AwayTeam.Sport
-                    || !matchToAdd.HomeTeam.Sport.IsDrawPossible && matchToAdd.DrawOdd != null)
+                var sportOfMatch = context.Sports.SingleOrDefault(sport => sport.Id == matchToAdd.HomeTeam.SportId);
+                if (sportOfMatch == null)
+                    return false;
+                if (matchToAdd.TimeOfStart < DateTime.Now
+                    || matchToAdd.AwayTeam.SportId != sportOfMatch.Id
+                    || !sportOfMatch.IsDrawPossible && matchToAdd.DrawOdd != null
+                    || matchToAdd.DrawOdd != null && matchToAdd.DrawOdd < 1.01
+                    || matchToAdd.HomeWinOdd != null && matchToAdd.HomeWinOdd < 1.01
+                    || matchToAdd.AwayWinOdd != null && matchToAdd.AwayWinOdd < 1.01)
                     return false;
                 context.Teams.Attach(matchToAdd.HomeTeam);
                 context.Teams.Attach(matchToAdd.AwayTeam);
