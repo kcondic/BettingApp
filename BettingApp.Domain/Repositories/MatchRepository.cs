@@ -76,6 +76,7 @@ namespace BettingApp.Domain.Repositories
                 if (sportOfMatch == null)
                     return false;
                 if (matchToAdd.TimeOfStart < DateTime.Now
+                    || matchToAdd.HomeTeamId == matchToAdd.AwayTeamId
                     || matchToAdd.AwayTeam.SportId != sportOfMatch.Id
                     || !sportOfMatch.IsDrawPossible && matchToAdd.DrawOdd != null
                     || matchToAdd.DrawOdd != null && matchToAdd.DrawOdd < 1.01

@@ -42,10 +42,13 @@
                 {{matchTip.odd}}
                 <span v-on:click.prevent="removeTip(matchTip)">❌</span>
             </div>
-            <div>Ukupni koeficijent: {{totalOdd}}</div>
+            <div>Ukupni koeficijent: {{totalOddWithBonus}}</div>
             <div>Ulog: <input type="number" v-model.number="stake" min="2"/> kn</div>
             <div>Mogući dobitak: {{possibleWin}} kn</div>
             <div><button v-on:click.prevent="placeBet()">Uplati</button></div>
+            <div v-if="bonus.messages" v-for="bonusMessage in bonus.messages">
+                {{bonusMessage}}
+            </div>
         </form>
     </div>
 </template>
@@ -61,13 +64,17 @@
                 tips: [],
                 selected: '',
                 totalOdd: 1,
+                bonus: {},
                 stake: 2,
                 wallet: {}
             }
         },
         computed: {
+            totalOddWithBonus: function () {
+                return Math.round((this.totalOdd + this.bonus.bonusOdd) * 100) / 100;
+            },
             possibleWin: function () {
-                return Math.round(this.stake * this.totalOdd * 100) / 100;
+                return Math.round(this.stake * (this.totalOdd + this.bonus.bonusOdd) * 100) / 100;
             }
         },
         methods: {
@@ -102,6 +109,7 @@
                         tip: tip,
                         odd: odd
                     });
+                    this.checkBonuses();
                     this.calculateOdds(odd, 'increase');
                 }
                 else {
@@ -112,6 +120,7 @@
             },
             removeTip: function(matchTip) {
                 this.tips.splice(this.tips.indexOf(matchTip), 1);
+                this.checkBonuses();
                 this.calculateOdds(matchTip.odd, 'decrease');
             },
             calculateOdds: function (odd, operation) {
@@ -119,7 +128,7 @@
                     this.totalOdd *= odd;
                 else
                     this.totalOdd /= odd;
-                this.totalOdd = Math.round(this.totalOdd * 100) / 100;
+                this.totalOdd = Math.round((this.totalOdd) * 100) / 100;
             },
             placeBet: function () {
                 const ticketMatches = [];
@@ -133,7 +142,7 @@
                     Wallet: this.wallet,
                     TicketMatches: ticketMatches,
                     Stake: this.stake,
-                    TotalOdd: this.totalOdd
+                    TotalOdd: this.totalOdd + this.bonus.bonusOdd
                 };
                 axios.post('/api/user/bet', newTicket)
                     .then(response => {
@@ -144,6 +153,17 @@
                 }).catch(error => {
                     alert('Listić nije uplaćen. Nemate dovoljno\n' +
                         'sredstava ili Vam je zabranjen pristup.');
+                });
+            },
+            checkBonuses: function () {
+                const ticketMatches = [];
+                for (let matchTip of this.tips)
+                    ticketMatches.push({
+                        MatchId: matchTip.match.id
+                    });                
+                axios.post('/api/user/bonus', ticketMatches)
+                    .then(response => {
+                        this.bonus = response.data;
                 });
             }
         },

@@ -58,6 +58,13 @@ namespace BettingApp.Web.Controllers
         }
 
         [HttpPost]
+        [Route("bonus")]
+        public IActionResult GetTicketBonuses([FromBody]ICollection<TicketMatch> ticketMatchesToCheck)
+        {
+            return Ok(_ticketRepository.GetTicketBonuses(ticketMatchesToCheck));
+        }
+
+        [HttpPost]
         [Route("bet")]
         public IActionResult PlaceBet([FromBody]Ticket ticketToPlace)
         {

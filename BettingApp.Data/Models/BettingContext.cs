@@ -14,6 +14,7 @@ namespace BettingApp.Data.Models
     {
         public BettingContext() : base("BettingDatabase")
         {
+            Configuration.LazyLoadingEnabled = true;
             Database.SetInitializer(new BettingModelDbInitialization());
         }
 
