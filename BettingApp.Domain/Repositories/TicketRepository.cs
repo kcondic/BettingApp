@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Data.Entity;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading.Tasks;
 using BettingApp.Data.Enums;
 using BettingApp.Data.Models;
 using BettingApp.Data.Models.Entities;

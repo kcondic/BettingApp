@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Data.Entity;
-using System.Text;
-using System.Threading.Tasks;
 using BettingApp.Data.Models;
 using BettingApp.Data.Models.Entities;
 

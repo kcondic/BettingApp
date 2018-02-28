@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BettingApp.Data.Enums;
+﻿using BettingApp.Data.Enums;
 
 namespace BettingApp.Data.Models.Entities
 {

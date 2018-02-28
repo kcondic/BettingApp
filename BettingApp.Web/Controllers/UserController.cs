@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using BettingApp.Data.Enums;
 using BettingApp.Data.Models.Entities;
 using BettingApp.Domain.Repositories;

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BettingApp.Domain.Repositories;
+﻿using BettingApp.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 
 namespace BettingApp.Web.Controllers
 {
