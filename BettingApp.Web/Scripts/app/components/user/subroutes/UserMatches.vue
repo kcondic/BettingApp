@@ -1,27 +1,44 @@
 ﻿<template>
     <div>
-        <span v-on:click.prevent="getByDay('today')">Današnje oklade</span>
-        <span v-on:click.prevent="getByDay('tomorrow')">Sutrašnje oklade</span>
-        <select v-model="selected">
-            <option disabled value="">Oklade po sportu</option>
-            <option v-for="sport in sports" 
-                v-on:click.prevent="getForSport(sport.id)">
-                {{sport.name}}</option>
-        </select>
-        <span>Sredstva za klađenje: {{wallet.funds}} kn</span>
+        <div class="sub-menu">
+            <span v-on:click.prevent="getByDay('today')">Današnje oklade</span>
+            <span v-on:click.prevent="getByDay('tomorrow')">Sutrašnje oklade</span>
+            <select v-model="selected">
+                <option disabled value="">Oklade po sportu</option>
+                <option v-for="sport in sports"
+                        v-on:click.prevent="getForSport(sport.id)">
+                    {{sport.name}}
+                </option>
+            </select>
+        </div>
+        <span v-if="wallet">Sredstva za klađenje: {{wallet.funds}} kn</span>
+        <div v-if="!sportsWithMatches.length">
+            Trenutno nema događaja.
+        </div>
         <div v-for="sport in sportsWithMatches">
-            <span v-if="sport[0] && sport[0].homeTeam.sport">{{sport[0].homeTeam.sport.name}}</span>
-            <span class="tips">1 X 2</span>
+            <div v-if="sport.length">
+                <span class="match-general-info user">
+                    <span v-if="sport[0] && sport[0].homeTeam.sport">{{sport[0].homeTeam.sport.name}}</span>
+                </span>
+                <span class="match-odd">1</span>
+                <span class="match-odd">X</span>
+                <span class="match-odd">2</span>
+            </div>
+            <div v-else>
+                Trenutno nema događaja.
+            </div>
             <div v-for="match in sport">
-                {{match.homeTeam.name}} -
-                {{match.awayTeam.name}}
-                {{match.timeOfStart | formatDate}}
-                <span v-if="match.homeWinOdd" v-on:click.prevent="tipOnMatch(match, 0, match.homeWinOdd)">{{match.homeWinOdd}}</span>
-                <span v-else>-</span>
-                <span v-if="match.drawOdd" v-on:click.prevent="tipOnMatch(match, 1, match.drawOdd)">{{match.drawOdd}}</span>
-                <span v-else>-</span>
-                <span v-if="match.awayWinOdd" v-on:click.prevent="tipOnMatch(match, 2, match.awayWinOdd)">{{match.awayWinOdd}}</span>
-                <span v-else>-</span>
+                <span class="match-general-info user">
+                    {{match.homeTeam.name}} -
+                    {{match.awayTeam.name}}
+                    {{match.timeOfStart | formatDate}}
+                </span>
+                <span class="match-odd user" v-bind:class="{ active: isSelected(match.id, 0) }" v-if="match.homeWinOdd" v-on:click.prevent="tipOnMatch(match, 0, match.homeWinOdd)">{{match.homeWinOdd}}</span>
+                <span class="match-odd" v-else>-</span>
+                <span class="match-odd user" v-bind:class="{ active: isSelected(match.id, 1) }" v-if="match.drawOdd" v-on:click.prevent="tipOnMatch(match, 1, match.drawOdd)">{{match.drawOdd}}</span>
+                <span class="match-odd" v-else>-</span>
+                <span class="match-odd user" v-bind:class="{ active: isSelected(match.id, 2) }" v-if="match.awayWinOdd" v-on:click.prevent="tipOnMatch(match, 2, match.awayWinOdd)">{{match.awayWinOdd}}</span>
+                <span class="match-odd" v-else>-</span>
             </div>
         </div>
         <form v-if="tips.length">
@@ -40,7 +57,7 @@
                     2
                 </span>
                 {{matchTip.odd}}
-                <span v-on:click.prevent="removeTip(matchTip)">❌</span>
+                <span class="remove-button" v-on:click.prevent="removeTip(matchTip)">❌</span>
             </div>
             <div>Ukupni koeficijent: {{totalOddWithBonus}}</div>
             <div>Ulog: <input type="number" v-model.number="stake" min="2"/> kn</div>
@@ -165,6 +182,14 @@
                     .then(response => {
                         this.bonus = response.data;
                 });
+            },
+            isSelected: function (matchId, odd) {
+                const indexOfMatchInTips = this.tips.findIndex(tip => tip.match.id === matchId);
+                if (indexOfMatchInTips === -1)
+                    return false;
+                if (this.tips[indexOfMatchInTips].tip === odd)
+                    return true;
+                return false;
             }
         },
         created() {

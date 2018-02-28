@@ -1,16 +1,28 @@
 ﻿<template>
     <div>
         Događaji bez ishoda:
-        1 X 2 Odredi ishod
+        <div>
+            <span class="match-general-info"></span>
+            <span class="match-odd">1</span>
+            <span class="match-odd">X</span>
+            <span class="match-odd">2</span>
+            <span>Odredi ishod</span>
+        </div>
         <div v-for="match in matchesWithoutOutcome">
-            {{match.homeTeam.name}} - {{match.awayTeam.name}}
-            {{match.timeOfStart | formatDate}}
-            <input type="number" step="0.01" v-model.number="match.homeWinOdd" v-on:change="changeMatchOdds($event, match.id, 0)" />
-            <span v-if="match.homeTeam.sport.isDrawPossible">
+            <span class="match-general-info">
+                {{match.homeTeam.name}} - {{match.awayTeam.name}}
+                {{match.timeOfStart | formatDate}}
+            </span>
+            <span class="match-odd">
+                <input type="number" step="0.01" v-model.number="match.homeWinOdd" v-on:change="changeMatchOdds($event, match.id, 0)" />
+            </span>         
+            <span class="match-odd" v-if="match.homeTeam.sport.isDrawPossible">
                 <input type="number" step="0.01" v-model.number="match.drawOdd" v-on:change="changeMatchOdds($event, match.id, 1)" />
             </span>
-            <span v-else>-</span>
-            <input type="number" step="0.01" v-model.number="match.awayWinOdd" v-on:change="changeMatchOdds($event, match.id, 2)" />
+            <span class="match-odd" v-else>-</span>
+            <span class="match-odd">
+                <input type="number" step="0.01" v-model.number="match.awayWinOdd" v-on:change="changeMatchOdds($event, match.id, 2)" />
+            </span>         
             <button v-on:click.prevent="setOutcome(match.id, 0)" v-if="match.homeWinOdd">1</button>
             <button v-on:click.prevent="setOutcome(match.id, 1)" v-if="match.drawOdd && match.homeTeam.sport.isDrawPossible">X</button>
             <button v-on:click.prevent="setOutcome(match.id, 2)" v-if="match.awayWinOdd">2</button>
@@ -24,7 +36,8 @@
                     {{sport.name}}
                 </option>
             </select>
-            <div v-if="selectedSport">
+            <div class="add-match-options" v-if="selectedSport">
+                <div>
                     <select v-model="selectedHomeTeam">
                         <option disabled value="">Odaberi domaći tim</option>
                         <option v-for="team in selectedSport.sport.teams" v-bind:value="{team: team}" v-bind:disabled="getHomeDisabled(team)">
@@ -37,15 +50,20 @@
                             {{team.name}}
                         </option>
                     </select>
-                <input type="number" step="0.01" v-model="newMatchHomeWinOdd" placeholder="Domaća pobjeda kvota" />
-                <span v-if="selectedSport.sport.isDrawPossible">
-                    <input type="number" step="0.01" v-model="newMatchDrawOdd" placeholder="Remi kvota" />
-                </span>
-                <input type="number" step="0.01" v-model="newMatchAwayWinOdd" placeholder="Gostujuća pobjeda kvota" />
-                Vrijeme:
-                <input type="date" v-model="newMatchDate" />
-                <input type="number" v-model="newMatchHour" min="0" max="23" placeholder="HH"/> :
-                <input type="number" v-model="newMatchMinute" min="0" max="59" placeholder="mm"/>
+                </div>
+                <div>
+                    <input type="number" step="0.01" v-model="newMatchHomeWinOdd" placeholder="1" />
+                    <span v-if="selectedSport.sport.isDrawPossible">
+                        <input type="number" step="0.01" v-model="newMatchDrawOdd" placeholder="X" />
+                    </span>
+                    <input type="number" step="0.01" v-model="newMatchAwayWinOdd" placeholder="2" />
+                </div> 
+                <div>
+                    Vrijeme:
+                    <input type="date" v-model="newMatchDate" />
+                    <input type="number" v-model="newMatchHour" min="0" max="23" placeholder="HH" /> :
+                    <input type="number" v-model="newMatchMinute" min="0" max="59" placeholder="mm" />
+                </div>
                 <button v-on:click.prevent="addNewMatch()">Dodaj</button>
             </div>
         </form>

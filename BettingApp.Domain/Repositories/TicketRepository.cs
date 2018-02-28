@@ -23,7 +23,9 @@ namespace BettingApp.Domain.Repositories
                     .Include(ticket => ticket.TicketMatches.Select(ticketMatch => ticketMatch.Match))
                     .Include(ticket => ticket.TicketMatches.Select(ticketMatch => ticketMatch.Match.HomeTeam))
                     .Include(ticket => ticket.TicketMatches.Select(ticketMatch => ticketMatch.Match.AwayTeam))
-                    .Where(ticket => ticket.WalletId == walletId).ToList();
+                    .Where(ticket => ticket.WalletId == walletId)
+                    .OrderByDescending(ticket => ticket.Id)
+                    .ToList();
         }
 
         public Bonus.Bonus GetTicketBonuses(ICollection<TicketMatch> ticketMatchesToCheck)

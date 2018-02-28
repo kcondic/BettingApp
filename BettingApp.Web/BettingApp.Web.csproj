@@ -7,7 +7,6 @@
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.2.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="2.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.1" />
@@ -23,12 +22,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BettingApp.Data\BettingApp.Data.csproj" />
-    <ProjectReference Include="..\BettingApp.Domain\BettingApp.Domain.csproj" />
+    <None Include="wwwroot\assets\images\homepage.jpg" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <ProjectReference Include="..\BettingApp.Data\BettingApp.Data.csproj" />
+    <ProjectReference Include="..\BettingApp.Domain\BettingApp.Domain.csproj" />
   </ItemGroup>
 
 </Project>

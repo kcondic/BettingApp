@@ -1,15 +1,15 @@
 ﻿<template>
     <div>
-        <form>Uplati sredstva: 
-        <input type="number" v-model.number="payment" min="10"/>
-        <button v-on:click.prevent="fundsPayment()">Uplati</button>
+        <form>
+            <span class="form-item">Uplati sredstva:</span>  
+            <span class="form-item"><input type="number" v-model.number="payment" min="10" /></span>
+            <span class="form-item"><button v-on:click.prevent="fundsPayment()">Uplati</button></span>      
         </form>
-        <div v-for="transaction in transactions">
-            <span v-if="transaction.transactionType === 0">OKLADA -</span>
-            <span v-else-if="transaction.transactionType === 1">ISPLATA </span>
-            <span v-else>UPLATA </span>
-            <span>{{transaction.transactionAmount}} kn</span>
-            <div>{{transaction.timeOfTransaction | formatDate}}</div>
+        <div class="transactions" v-for="transaction in transactions">
+            <span class="transaction-negative" v-if="transaction.transactionType === 0">OKLADA</span>
+            <span class="transaction-positive" v-else-if="transaction.transactionType === 1">DOBIVENA OKLADA</span>
+            <span class="transaction-positive" v-else>UPLATA</span> 
+            <span>{{transaction.timeOfTransaction | formatDate}} {{transaction.transactionAmount}} kn</span>
         </div>
     </div>
 </template>

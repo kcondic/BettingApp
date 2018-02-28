@@ -1,9 +1,9 @@
 ﻿<template>
     <div>
         <form>
-            Prijavi se
-            <input type="text" v-model="username" placeholder="Korisničko ime">
-            <button v-on:click.prevent="signIn(username)">Prijava</button>
+            <span class="form-item">Prijavi se</span>
+            <span class="form-item"><input type="text" v-model="username" placeholder="Korisničko ime"></span>
+            <span class="form-item"><button v-on:click.prevent="signIn(username)">Prijava</button></span>
         </form>
     </div>
 </template>

@@ -4,21 +4,27 @@
             Timovi:
             <div v-for="sport in sports">
                 <span>{{sport.name}}</span>
-                <div v-for="team in sport.teams">
+                <div class="team-list" v-for="team in sport.teams">
                     {{team.name}}
                 </div>
             </div>
         </div>
         <form>
-            Dodaj novi tim:
-            <select v-model="selectedSport">
-                <option disabled value="">Odaberi sport</option>
-                <option v-for="sport in sports" v-bind:value="{sport: sport}">
-                    {{sport.name}}
-                </option>
-            </select>
-            <input type="text" v-model="newTeamName"/>
-            <button v-on:click.prevent="addNewTeam()">Dodaj</button>
+            <span class="form-item">Dodaj novi tim:</span>
+            <span class="form-item">
+                <select v-model="selectedSport">
+                    <option disabled value="">Odaberi sport</option>
+                    <option v-for="sport in sports" v-bind:value="{sport: sport}">
+                        {{sport.name}}
+                    </option>
+                </select>
+            </span>
+            <span class="form-item">
+                <input type="text" v-model="newTeamName" />
+            </span>
+            <span class="form-item">
+                <button v-on:click.prevent="addNewTeam()">Dodaj</button>
+            </span>          
         </form>
     </div>
 </template>

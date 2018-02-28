@@ -8,11 +8,17 @@
             </div>
         </div>
         <form>
-            Dodaj novi sport
-            <input type="text" v-model="newSportName" />
-            <input type="checkbox" v-model="isDrawPossible"/>
-            <label for="checkbox">Remi moguć?</label>
-            <button v-on:click.prevent="addNewSport()">Dodaj</button>
+            <span class="form-item">Dodaj novi sport</span>
+            <span class="form-item">
+                <input type="text" v-model="newSportName" />
+            </span>
+            <span class="form-item">
+                <input type="checkbox" v-model="isDrawPossible" />
+                <label for="checkbox">Remi moguć?</label>
+            </span>
+            <span class="form-item">
+                <button v-on:click.prevent="addNewSport()">Dodaj</button>
+            </span>       
         </form>
     </div>
 </template>

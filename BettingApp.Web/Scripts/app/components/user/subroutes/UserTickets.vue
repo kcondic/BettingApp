@@ -1,7 +1,7 @@
 ﻿<template>
     <div>
         Pregled oklada
-        <div v-for="ticket in tickets">
+        <div class="ticket" v-for="ticket in tickets">
             <div v-for="(ticketMatch, index) in ticket.ticketMatches">
                 <div>
                     {{index+1}}.
@@ -23,7 +23,9 @@
             <div>Ulog: {{ticket.stake}} kn</div>
             <div>Ukupni koeficijent: {{ticket.totalOdd}}</div>
             <div>Mogući dobitak: {{calculatePossibleWin(ticket.stake, ticket.totalOdd)}} kn</div>
-        ---------------------------------------------
+            <img class="ticket-icon" v-if="ticket.payout > 0" v-bind:src="check"/>
+            <img class="ticket-icon" v-else-if="ticket.payout === 0" v-bind:src="cross"/>
+            <img class="ticket-icon" v-else v-bind:src="active"/>
         </div>
     </div>
 </template>
@@ -34,7 +36,10 @@
         name: 'UserTickets',
         data() {
             return {
-                tickets: []
+                tickets: [],
+                check: require('../../../../../wwwroot/assets/images/check.png'),
+                cross: require('../../../../../wwwroot/assets/images/cross.png'),
+                active: require('../../../../../wwwroot/assets/images/active.png')
             }
         },
         methods: {
