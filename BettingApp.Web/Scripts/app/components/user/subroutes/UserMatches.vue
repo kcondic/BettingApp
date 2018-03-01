@@ -6,7 +6,7 @@
             <select v-model="selected">
                 <option disabled value="">Oklade po sportu</option>
                 <option v-for="sport in sports"
-                        v-on:click.prevent="getForSport(sport.id)">
+                        v-bind:value="{id: sport.id}">
                     {{sport.name}}
                 </option>
             </select>
@@ -190,6 +190,12 @@
                 if (this.tips[indexOfMatchInTips].tip === odd)
                     return true;
                 return false;
+            }
+        },
+        watch: {
+            selected: function(newVal)
+            {
+                this.getForSport(newVal.id);
             }
         },
         created() {
