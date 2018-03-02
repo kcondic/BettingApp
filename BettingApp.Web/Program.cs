@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore;
+﻿using System;
+using BettingApp.Data.Initialization;
+using BettingApp.Data.Models;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace BettingApp.Web
 {
@@ -7,7 +12,24 @@ namespace BettingApp.Web
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            var host = BuildWebHost(args);
+
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<BettingContext>();
+                try
+                {
+                    BettingModelDbInitialization.SeedDb(context);
+                }
+                catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "An error occurred seeding the DB.");
+                }
+            }
+
+            host.Run();
         }
 
         public static IWebHost BuildWebHost(string[] args) =>

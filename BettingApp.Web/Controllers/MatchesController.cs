@@ -1,4 +1,5 @@
-﻿using BettingApp.Domain.Repositories;
+﻿using BettingApp.Data.Models;
+using BettingApp.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BettingApp.Web.Controllers
@@ -6,10 +7,10 @@ namespace BettingApp.Web.Controllers
     [Route("api/matches")]
     public class MatchesController : Controller
     {
-        public MatchesController()
+        public MatchesController(BettingContext context)
         {
-            _matchRepository = new MatchRepository();
-            _sportRepository = new SportRepository();
+            _matchRepository = new MatchRepository(context);
+            _sportRepository = new SportRepository(context);
         }
         private readonly MatchRepository _matchRepository;
         private readonly SportRepository _sportRepository;

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using BettingApp.Data.Enums;
+using BettingApp.Data.Models;
 using BettingApp.Data.Models.Entities;
 using BettingApp.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +11,11 @@ namespace BettingApp.Web.Controllers
     [Route("api/user")]
     public class UserController : Controller
     {
-        public UserController()
+        public UserController(BettingContext context)
         {
-            _walletRepository = new WalletRepository();
-            _transactionRepository = new TransactionRepository();
-            _ticketRepository = new TicketRepository();
+            _walletRepository = new WalletRepository(context);
+            _transactionRepository = new TransactionRepository(context);
+            _ticketRepository = new TicketRepository(context);
         }
         private readonly WalletRepository _walletRepository;
         private readonly TransactionRepository _transactionRepository;

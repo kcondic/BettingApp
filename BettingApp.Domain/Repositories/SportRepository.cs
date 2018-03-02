@@ -8,21 +8,23 @@ namespace BettingApp.Domain.Repositories
 {
     public class SportRepository
     {
+        public SportRepository(BettingContext context)
+        {
+            _context = context;
+        }
+        private readonly BettingContext _context;
+
         public List<Sport> GetSports()
         {
-            using (var context = new BettingContext())
-                return context.Sports
-                              .Include(sport => sport.Teams)
-                              .ToList();
+            return _context.Sports
+                            .Include(sport => sport.Teams)
+                            .ToList();
         }
 
         public void AddSport(Sport sportToAdd)
         {
-            using (var context = new BettingContext())
-            {
-                context.Sports.Add(sportToAdd);
-                context.SaveChanges();
-            }
+            _context.Sports.Add(sportToAdd);
+            _context.SaveChanges();
         }
     }
 }

@@ -5,12 +5,11 @@ using BettingApp.Data.Models.Entities;
 
 namespace BettingApp.Data.Models
 {
+    [DbConfigurationType(typeof(CodeConfig))]
     public class BettingContext : DbContext
     {
-        public BettingContext() : base("BettingDatabase")
+        public BettingContext(string connectionName) : base(connectionName)
         {
-            Configuration.LazyLoadingEnabled = true;
-            Database.SetInitializer(new BettingModelDbInitialization());
         }
 
         public virtual DbSet<Match> Matches { get; set; }
@@ -51,6 +50,15 @@ namespace BettingApp.Data.Models
                 .WithRequired(x => x.Owner);
 
             base.OnModelCreating(modelBuilder);
+        }
+    }
+
+    public class CodeConfig : DbConfiguration
+    {
+        public CodeConfig()
+        {
+            SetProviderServices("System.Data.SqlClient",
+                System.Data.Entity.SqlServer.SqlProviderServices.Instance);
         }
     }
 }

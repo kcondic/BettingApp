@@ -1,4 +1,5 @@
-﻿using BettingApp.Data.Models.Entities;
+﻿using BettingApp.Data.Models;
+using BettingApp.Data.Models.Entities;
 using BettingApp.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
@@ -8,12 +9,12 @@ namespace BettingApp.Web.Controllers
     [Route("api/admin")]
     public class AdminController : Controller
     {
-        public AdminController()
+        public AdminController(BettingContext context)
         {
-            _matchRepository = new MatchRepository();
-            _teamRepository = new TeamRepository();
-            _sportRepository = new SportRepository();
-            _ticketRepository = new TicketRepository();
+            _matchRepository = new MatchRepository(context);
+            _teamRepository = new TeamRepository(context);
+            _sportRepository = new SportRepository(context);
+            _ticketRepository = new TicketRepository(context);
         }
         private readonly MatchRepository _matchRepository;
         private readonly TeamRepository _teamRepository;

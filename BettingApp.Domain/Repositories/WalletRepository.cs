@@ -8,31 +8,31 @@ namespace BettingApp.Domain.Repositories
 {
     public class WalletRepository
     {
+        public WalletRepository(BettingContext context)
+        {
+            _context = context;
+        }
+        private readonly BettingContext _context;
+
         public Wallet GetWallet(int userId)
         {
-            using (var context = new BettingContext())
-            {
-                var userToGetWallet = context.Users
-                                             .Include(user => user.Wallet)
-                                             .FirstOrDefault(user => user.Id == userId);
-                if (userToGetWallet == null || userToGetWallet.Role == Role.Admin)
-                    return null;
+            var userToGetWallet = _context.Users
+                                            .Include(user => user.Wallet)
+                                            .FirstOrDefault(user => user.Id == userId);
+            if (userToGetWallet == null || userToGetWallet.Role == Role.Admin)
+                return null;
 
-                return userToGetWallet.Wallet;
-            }
+            return userToGetWallet.Wallet;
         }
 
         public bool FundsPayment(int walletId, double fundsToGrant)
         {
-            using (var context = new BettingContext())
-            {
-                var wallet = context.Wallets.Find(walletId);
-                if (wallet == null || fundsToGrant < 10)
-                    return false;
-                wallet.Funds += fundsToGrant;
-                context.SaveChanges();
-                return true;
-            }
+            var wallet = _context.Wallets.Find(walletId);
+            if (wallet == null || fundsToGrant < 10)
+                return false;
+            wallet.Funds += fundsToGrant;
+            _context.SaveChanges();
+            return true;
         }
     }
 }

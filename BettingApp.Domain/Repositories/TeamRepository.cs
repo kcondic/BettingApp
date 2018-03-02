@@ -5,17 +5,20 @@ namespace BettingApp.Domain.Repositories
 {
     public class TeamRepository
     {
+        public TeamRepository(BettingContext context)
+        {
+            _context = context;
+        }
+        private readonly BettingContext _context;
+
         public bool AddTeam(Team teamToAdd)
         {
-            using (var context = new BettingContext())
-            {
-                if (teamToAdd.Sport == null)
-                    return false;
-                context.Sports.Attach(teamToAdd.Sport);
-                context.Teams.Add(teamToAdd);
-                context.SaveChanges();
-                return true;
-            }
+            if (teamToAdd.Sport == null)
+                return false;
+            _context.Sports.Attach(teamToAdd.Sport);
+            _context.Teams.Add(teamToAdd);
+            _context.SaveChanges();
+            return true;
         }
     }
 }

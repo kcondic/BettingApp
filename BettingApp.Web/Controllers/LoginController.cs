@@ -1,4 +1,5 @@
-﻿using BettingApp.Domain.Repositories;
+﻿using BettingApp.Data.Models;
+using BettingApp.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 
@@ -7,9 +8,9 @@ namespace BettingApp.Web.Controllers
     [Route("api/login")]
     public class LoginController : Controller
     {
-        public LoginController()
+        public LoginController(BettingContext context)
         {
-            _authRepository = new AuthRepository();
+            _authRepository = new AuthRepository(context);
         }
         private readonly AuthRepository _authRepository;
 

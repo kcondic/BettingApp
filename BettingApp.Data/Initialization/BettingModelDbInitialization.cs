@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using BettingApp.Data.Enums;
 using BettingApp.Data.Models;
 using BettingApp.Data.Models.Entities;
 
 namespace BettingApp.Data.Initialization
 {
-    public class BettingModelDbInitialization : CreateDatabaseIfNotExists<BettingContext>
+    public class BettingModelDbInitialization
     {
-        protected override void Seed(BettingContext context)
+        public static void SeedDb(BettingContext context)
         {
+            if (context.Users.Any())
+                return;
+
             var sports = new List<Sport>()
             {
                 new Sport() {Name = "Nogomet", IsDrawPossible = true},
@@ -156,7 +160,7 @@ namespace BettingApp.Data.Initialization
             context.Matches.AddRange(matches);
             context.Wallets.AddRange(wallets);
             context.Users.AddRange(users);
-            base.Seed(context);
+            context.SaveChanges();
         }
     }
 }
